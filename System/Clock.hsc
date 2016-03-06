@@ -84,6 +84,7 @@ data Clock
     --   adjtime(3).
   | MonotonicRaw
 
+#ifdef CLOCK_BOOTTIME
     -- | (since Linux 2.6.39; Linux-specific)
     --   Identical to CLOCK_MONOTONIC, except it also includes
     --   any time that the system is suspended.  This allows
@@ -92,6 +93,7 @@ data Clock
     --   CLOCK_REALTIME, which may have discontinuities if the
     --   time is changed using settimeofday(2).
   | Boottime
+#endif
 
     -- | (since Linux 2.6.32; Linux-specific)
     --   A faster but less precise version of CLOCK_MONOTONIC.
@@ -139,7 +141,9 @@ clockToConst ProcessCPUTime = #const CLOCK_PROCESS_CPUTIME_ID
 clockToConst  ThreadCPUTime = #const CLOCK_THREAD_CPUTIME_ID
 #if defined (linux_HOST_OS)
 clockToConst    MonotonicRaw = #const CLOCK_MONOTONIC_RAW
+#ifdef CLOCK_BOOTTIME
 clockToConst        Boottime = #const CLOCK_BOOTTIME
+#endif
 clockToConst MonotonicCoarse = #const CLOCK_MONOTONIC_COARSE
 clockToConst  RealtimeCoarse = #const CLOCK_REALTIME_COARSE
 #endif
